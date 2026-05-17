@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analyzer – PhishGuard</title>
+  <meta name="description"
+    content="Analyze your emails and messages for spam, phishing, tone, clarity, and professionalism using PhishGuard." />
+  <link rel="stylesheet" href="/static/css/global.css" />
+  <link rel="stylesheet" href="/static/css/analyzer.css" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+</head>
+
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="nav">
+    <a href="/" class="nav-logo" aria-label="PhishGuard Home">
+      <div class="nav-logo-icon">🛡️</div>
+      <span class="nav-logo-text">Phish<span>Guard</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="#features-section" style="display:none"></a>
+      <span class="badge badge-primary" style="font-size:0.75rem;">✅ Offline Mode</span>
+    </div>
+  </nav>
+
+  <!-- ── Analyzer Page ── -->
+  <div class="analyzer-page">
+
+    <!-- Hero Header -->
+    <div class="analyzer-hero">
+      <div class="analyzer-hero-orb"></div>
+      <div class="grid-bg" style="position:absolute;inset:0;opacity:0.5;"></div>
+      <div style="position:relative;z-index:1;padding-bottom:32px;">
+        <h1 class="analyzer-title">Message <span>Intelligence</span> Dashboard</h1>
+        <p class="analyzer-subtitle">Paste any message below and get a full AI-powered quality report instantly.</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="analyzer-main">
+
+      <!-- ── Input Panel ── -->
+      <div class="glass-card input-panel" id="inputPanel">
+        <div class="input-panel-header">
+          <h2>
+            <span class="panel-icon">📝</span>
+            Message Input
+          </h2>
+          <div class="char-counter">
+            <span id="charCount">0</span> / 10,000 chars
+          </div>
+        </div>
+
+        <textarea id="messageInput" class="message-textarea"
+          placeholder="Paste your email or message here…&#10;&#10;Tip: Try the sample buttons below, or use Ctrl+Enter to analyze."
+          aria-label="Message input area" maxlength="10000" spellcheck="false"></textarea>
+
+        <div class="textarea-toolbar">
+          <div class="sample-btns">
+            <span style="font-size:0.78rem;color:var(--muted);font-weight:600;align-self:center;">Try sample:</span>
+            <button class="sample-btn" data-sample="phishing" id="samplePhishing">🎣 Phishing</button>
+            <button class="sample-btn" data-sample="spam" id="sampleSpam">🚫 Spam</button>
+            <button class="sample-btn" data-sample="professional" id="samplePro">💼 Professional</button>
+          </div>
+          <div class="analyze-actions">
+            <button id="clearBtn" aria-label="Clear message">✕ Clear</button>
+            <button class="btn btn-primary" id="analyzeBtn" aria-label="Analyze message">
+              🔍 Analyze Message
+            </button>
+          </div>
+        </div>
+
+        <p style="font-size:0.75rem;color:var(--muted);margin-top:12px;opacity:0.7;">
+          💡 Tip: Press <kbd
+            style="background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:4px;font-size:0.7rem;">Ctrl +
+            Enter</kbd> to analyze
+        </p>
+      </div>
+
+      <!-- ── Loading State ── -->
+      <div id="loadingState" class="glass-card scan-effect" style="display:none;">
+        <div class="spinner"></div>
+        <p class="loading-text">Running NLP Analysis…</p>
+        <div class="loading-steps" id="loadingSteps"></div>
+      </div>
+
+      <!-- ── Results Section ── -->
+      <div id="resultsSection">
+
+        <!-- Results Header -->
+        <div class="results-header">
+          <h2>
+            📊 Analysis Results
+          </h2>
+          <div id="overallRisk" class="overall-risk-badge badge-muted">–</div>
+        </div>
+
+        <div class="results-grid">
+
+          <!-- ─────────────── SPAM CARD ─────────────── -->
+          <div class="glass-card result-card card-spam" id="spamCard">
+            <div class="result-card-header">
+              <div class="result-card-title">
+                <div class="result-card-icon icon-danger">🚫</div>
+                Spam & Phishing Score
+              </div>
+              <span id="spamRiskBadge" class="badge badge-muted">–</span>
+            </div>
+
+            <div class="spam-layout">
+              <div class="spam-score-block">
+                <div class="spam-score-number" id="spamScoreNum">–</div>
+                <div class="spam-score-label">Spam Score</div>
+                <div class="progress-wrap" style="width:120px;margin-top:12px;">
+                  <div class="progress-bar danger" id="spamBar" style="width:0%"></div>
+                </div>
+              </div>
+
+              <div class="spam-details">
+                <div class="spam-risk-row">
+                  <span style="font-size:0.82rem;color:var(--muted);font-weight:500;">Risk Level:</span>
+                </div>
+                <div class="spam-reasons" id="spamReasons"></div>
+              </div>
+            </div>
+
+            <div class="keywords-row" id="keywordsRow" style="display:none;">
+              <div class="keywords-label">🔑 Suspicious Keywords Detected</div>
+              <div id="spamKeywords"></div>
+            </div>
+          </div>
+
+          <!-- ─────────────── TONE CARD ─────────────── -->
+          <div class="glass-card result-card card-tone" id="toneCard">
+            <div class="result-card-header">
+              <div class="result-card-title">
+                <div class="result-card-icon icon-primary">🎭</div>
+                Tone Analysis
+              </div>
+            </div>
+
+            <div class="tone-main">
+              <div class="tone-icon-big" id="toneEmoji">–</div>
+              <div>
+                <div class="tone-name" id="toneName">–</div>
+                <div class="tone-desc" id="toneDesc">–</div>
+              </div>
+            </div>
+
+            <div class="sentiment-row">
+              <span class="sentiment-label-sm">Sentiment:</span>
+              <span id="sentimentBadge" class="badge badge-muted">–</span>
+            </div>
+          </div>
+
+          <!-- ─────────────── INTENT CARD ─────────────── -->
+          <div class="glass-card result-card card-intent" id="intentCard">
+            <div class="result-card-header">
+              <div class="result-card-title">
+                <div class="result-card-icon icon-warning">🔎</div>
+                Intent Detection
+              </div>
+              <span id="intentRisk" class="badge badge-muted">–</span>
+            </div>
+
+            <div class="intent-primary">
+              <div class="intent-icon-xl" id="intentIcon">📧</div>
+              <div>
+                <div class="intent-name" id="intentName">–</div>
+                <div class="intent-sub-label">Primary detected intent</div>
+              </div>
+            </div>
+
+            <div class="secondary-intents" id="secondaryIntentsWrap" style="display:none;">
+              <div class="secondary-intents-label">Also Detected:</div>
+              <div class="secondary-intents-list" id="secondaryIntents"></div>
+            </div>
+          </div>
+
+          <!-- ─────────────── CLARITY CARD ─────────────── -->
+          <div class="glass-card result-card card-clarity" id="clarityCard">
+            <div class="result-card-header">
+              <div class="result-card-title">
+                <div class="result-card-icon icon-warning">✏️</div>
+                Clarity Score
+              </div>
+            </div>
+
+            <div class="score-display">
+              <div class="score-num-big" id="clarityScoreNum">–</div>
+              <div class="score-meta">
+                <div class="score-meta-label">Rating</div>
+                <div class="score-meta-rating" id="clarityLabel">–</div>
+                <div class="progress-wrap" style="margin-top:8px;">
+                  <div class="progress-bar success" id="clarityBar" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="score-issues" id="clarityIssues"></div>
+
+            <div class="stats-mini-grid">
+              <div class="stats-mini-item">
+                <div class="stats-mini-val" id="statWords">–</div>
+                <div class="stats-mini-key">Words</div>
+              </div>
+              <div class="stats-mini-item">
+                <div class="stats-mini-val" id="statSents">–</div>
+                <div class="stats-mini-key">Sentences</div>
+              </div>
+              <div class="stats-mini-item">
+                <div class="stats-mini-val" id="statAvgW">–</div>
+                <div class="stats-mini-key">Avg Words/Sent</div>
+              </div>
+              <div class="stats-mini-item">
+                <div class="stats-mini-val" id="statAvgWl">–</div>
+                <div class="stats-mini-key">Avg Word Len</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─────────────── PROFESSIONALISM CARD ─────────────── -->
+          <div class="glass-card result-card card-prof" id="profCard">
+            <div class="result-card-header">
+              <div class="result-card-title">
+                <div class="result-card-icon icon-success">💼</div>
+                Professionalism
+              </div>
+            </div>
+
+            <div class="score-display">
+              <div class="score-num-big" id="profScoreNum">–</div>
+              <div class="score-meta">
+                <div class="score-meta-label">Rating</div>
+                <div class="score-meta-rating" id="profLabel">–</div>
+                <div class="progress-wrap" style="margin-top:8px;">
+                  <div class="progress-bar success" id="profBar" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="score-issues" id="profNotes"></div>
+          </div>
+
+          <!-- ─────────────── REWRITE CARD ─────────────── -->
+          <div class="glass-card result-card card-rewrite" id="rewriteCard">
+            <div class="result-card-header">
+              <div class="result-card-title">
+                <div class="result-card-icon icon-primary">✨</div>
+                AI Rewrite Suggestion
+              </div>
+            </div>
+            <div id="rewriteContent">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+        </div><!-- /results-grid -->
+
+        <!-- Analyze Again -->
+        <div class="analyze-again-wrap">
+          <button class="btn btn-outline" id="analyzeAgainBtn">
+            ← Analyze Another Message
+          </button>
+        </div>
+
+      </div><!-- /resultsSection -->
+
+    </main>
+  </div>
+
+  <!-- ── Error Toast ── -->
+  <div id="errorToast" role="alert" aria-live="assertive">
+    <span>⚠️</span>
+    <span id="errorMsg">An error occurred.</span>
+  </div>
+
+  <script src="/static/js/analyzer.js"></script>
+</body>
+
+</html>
