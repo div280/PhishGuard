@@ -23,17 +23,11 @@ AI-Powered Email & Message Quality Analyzer
 
 ---
 ## Project Preview
-<img width="1875" height="833" alt="image" src="https://github.com/user-attachments/assets/384d87f3-f95d-40f8-a4aa-e3ea26a07aed" />
 
-<img width="718" height="678" alt="image" src="https://github.com/user-attachments/assets/664978ae-adc2-46dd-b03f-c3b386860812" />
-
-<img width="775" height="814" alt="image" src="https://github.com/user-attachments/assets/026e89f3-913d-4f78-9dd9-5aac8d9b66a0" />
-
-<img width="1034" height="584" alt="image" src="https://github.com/user-attachments/assets/597bb814-0879-485d-a08d-a671c75d0a56" />
-
-<img width="750" height="827" alt="image" src="https://github.com/user-attachments/assets/14035fa9-c8a7-48a8-afa5-41338f466c37" />
-
-<img width="735" height="797" alt="image" src="https://github.com/user-attachments/assets/69e7ea6e-a2c7-499a-8f08-d5596e709fe5" />
+| | | |
+|---|---|---|
+| <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/384d87f3-f95d-40f8-a4aa-e3ea26a07aed" /> | <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/664978ae-adc2-46dd-b03f-c3b386860812" /> | <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/026e89f3-913d-4f78-9dd9-5aac8d9b66a0" /> |
+| <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/597bb814-0879-485d-a08d-a671c75d0a56" /> | <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/14035fa9-c8a7-48a8-afa5-41338f466c37" /> | <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/69e7ea6e-a2c7-499a-8f08-d5596e709fe5" /> |
 
 
 
